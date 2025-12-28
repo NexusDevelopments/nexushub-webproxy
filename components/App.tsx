@@ -45,14 +45,9 @@ export default function App() {
     }
   };
 
-  const handleSearch = (query: string, searchEngine: string) => {
-    const searchUrls: Record<string, string> = {
-      google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-      duckduckgo: `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
-      bing: `https://www.bing.com/search?q=${encodeURIComponent(query)}`
-    };
-    
-    const url = searchUrls[searchEngine] || searchUrls.google;
+  const handleSearch = (query: string) => {
+    // Use DuckDuckGo for secure, private searches
+    const url = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
     updateTabUrl(activeTabId, url);
   };
 

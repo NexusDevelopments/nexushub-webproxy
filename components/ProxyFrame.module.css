@@ -48,3 +48,34 @@
     transform: rotate(360deg);
   }
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .loading p {
+    font-size: 14px;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(124, 58, 237, 0.2);
+    border-top: 3px solid #7c3aed;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading {
+    gap: 15px;
+  }
+
+  .loading p {
+    font-size: 12px;
+  }
+
+  .spinner {
+    width: 35px;
+    height: 35px;
+    border: 2px solid rgba(124, 58, 237, 0.2);
+    border-top: 2px solid #7c3aed;
+  }
+}

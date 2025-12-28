@@ -108,3 +108,101 @@
   color: #e0e0e0;
   font-size: 14px;
 }
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding: 10px 15px;
+    gap: 10px;
+  }
+
+  .logo {
+    font-size: 18px;
+    gap: 8px;
+  }
+
+  .logoIcon {
+    font-size: 22px;
+  }
+
+  .homeInfo {
+    padding: 30px 15px;
+  }
+
+  .homeInfo h2 {
+    font-size: 36px;
+  }
+
+  .homeInfo p {
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+
+  .shortcuts {
+    gap: 15px;
+  }
+
+  .shortcut {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .shortcut kbd {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    height: 100dvh; /* Mobile viewport height */
+  }
+
+  .header {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .logo {
+    font-size: 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .logoIcon {
+    font-size: 20px;
+  }
+
+  .homeInfo {
+    padding: 20px 12px;
+  }
+
+  .homeInfo h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .homeInfo p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .shortcuts {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .shortcut {
+    padding: 8px 10px;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .shortcut kbd {
+    padding: 2px 5px;
+    font-size: 9px;
+  }
+
+  .shortcut span {
+    font-size: 12px;
+  }
+}
