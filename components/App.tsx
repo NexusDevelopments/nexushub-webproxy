@@ -15,7 +15,7 @@ interface Tab {
 
 export default function App() {
   const [tabs, setTabs] = useState<Tab[]>([
-    { id: 1, title: 'Home', url: null, isActive: true }
+    { id: 1, title: 'Home', url: null }
   ]);
   const [activeTabId, setActiveTabId] = useState(1);
   const [nextTabId, setNextTabId] = useState(2);
