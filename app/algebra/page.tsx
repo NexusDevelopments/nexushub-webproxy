@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './algebra.module.css';
 
-export default function Algebra() {
+function AlgebraContent() {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchUrl, setSearchUrl] = useState('');
@@ -60,5 +60,13 @@ export default function Algebra() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Algebra() {
+  return (
+    <Suspense fallback={<div style={{ background: '#0a0015' }} />}>
+      <AlgebraContent />
+    </Suspense>
   );
 }
