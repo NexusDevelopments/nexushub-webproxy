@@ -11,7 +11,7 @@ A fast, modern web proxy built with **Next.js** and optimized for **Vercel deplo
 - ⌨️ **Keyboard Navigation** - Full arrow key and shortcut support
 - 🔒 **Secure Proxy** - CORS-enabled with sandboxed iframes
 - 📱 **Full Mobile Support** - Responsive design for all devices (desktop, tablet, mobile)
-- 🌍 **Custom Domain Ready** - Easy FreeDNS setup for custom domains
+- 🌍 **Wildcard Subdomains** - Unlimited free subdomains for users
 
 ## 🎮 Keyboard Shortcuts
 
@@ -30,67 +30,119 @@ A fast, modern web proxy built with **Next.js** and optimized for **Vercel deplo
 
 ```bash
 cd nexushub
-npm run install-all
+npm install
 ```
 
 ### Development
 
-Start both server and client:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-The server runs on `http://localhost:5000` and the client on `http://localhost:3000`
+The app runs on `http://localhost:3000`
 
 ### Production Build
 
 ```bash
 npm run build
-npm run server
+npm run start
 ```
 
-## � Vercel Deployment
+## 🚀 Vercel Deployment
 
-### Prerequisites
-- Vercel account (free at vercel.com)
-- Git repository (GitHub, GitLab, or Bitbucket)
+### One-Click Deploy
 
-### Deploy in One Click
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/NexusDevelopments/nexushub-webproxy)
+
+Or manually:
 
 1. Go to [vercel.com/new](https://vercel.com/new)
 2. Click **"Import Git Repository"**
 3. Paste: `https://github.com/NexusDevelopments/nexushub-webproxy`
 4. Click **Deploy**
-5. Done! Your proxy will be live in ~2 minutes
 
-Or use Vercel CLI:
-```bash
-npm i -g vercel
-vercel
+## 🌐 Wildcard Subdomains (Like Doge/Utopia)
+
+NexusHub supports **unlimited wildcard subdomains**. Anyone can create their own subdomain for free!
+
+### How It Works
+
+**Everyone visiting any subdomain gets the same NexusHub proxy:**
+- `alice.nexushublol.com` → NexusHub
+- `bob.nexushublol.com` → NexusHub
+- `xyz.nexushublol.com` → NexusHub
+
+### Setup (3 Simple Steps)
+
+#### 1️⃣ Get a Domain
+
+**Free Option (Recommended):**
+- Go to https://freedns.afraid.org
+- Sign up (takes 2 minutes)
+- Choose a free domain from their list
+- You now own something like `subdomain.example.com`
+
+**Paid Option:**
+- Buy from Namecheap, GoDaddy, etc. ($1-15/year)
+
+#### 2️⃣ Point Domain to NexusHub
+
+In your domain's DNS settings, add this wildcard record:
+
+| Type | Name | Target |
+|------|------|--------|
+| CNAME | `*` | `nexushublol.vercel.app` |
+
+**That's it!** All subdomains now point to NexusHub.
+
+#### 3️⃣ Share With Others
+
+Share your domain:
+```
+🌐 Visit alice.nexushublol.com for a proxy
+🌐 Visit bob.nexushublol.com for browsing
+🌐 Visit xyz.nexushublol.com for searching
 ```
 
-## 🌍 Custom Domain Setup (FreeDNS)
+Each person gets their own unique subdomain - no signup needed!
 
-Get a free domain and point it to your Vercel deployment:
+### Example DNS Setups
 
-### Step 1: Get Free Domain on FreeDNS
-1. Go to https://freedns.afraid.org/
-2. Register account (free)
-3. Go to "Subdomains" → "Add Subdomain"
-4. Create your domain: `nexushub.freedns.io` (or choose your own)
-5. Point to your Vercel URL
+**FreeDNS:**
+1. Go to freedns.afraid.org
+2. Add subdomain:
+   - Name: `*`
+   - Domain: `example.freedns.io`
+   - Type: CNAME
+   - Destination: `nexushublol.vercel.app`
 
-### Step 2: Set Custom Domain on Vercel
-1. In Vercel Dashboard, go to your project
-2. Settings → Domains
-3. Add your FreeDNS domain
-4. Update DNS records in FreeDNS to point to Vercel's servers
+**Namecheap/GoDaddy:**
+1. Go to DNS settings
+2. Add CNAME record:
+   - Host: `*`
+   - Value: `nexushublol.vercel.app`
 
-### Step 3: Access Your Proxy
-- Mobile: `https://nexushub.freedns.io`
-- Desktop: `https://nexushub.freedns.io`
-- Fully responsive on all devices!
+### Verify It Works
+
+```bash
+nslookup test.nexushublol.com
+nslookup alice.nexushublol.com
+nslookup bob.nexushublol.com
+# All should resolve successfully
+```
+
+### What Users Get
+
+Anyone visiting ANY subdomain gets:
+- ✅ Full NexusHub proxy
+- ✅ DuckDuckGo search
+- ✅ Tab system with keyboard shortcuts
+- ✅ Mobile responsive interface
+- ✅ All features working
+
+**No signup, no claiming, just works!**
 
 ## 📁 Project Structure
 
@@ -100,15 +152,19 @@ nexushub/
 │   ├── layout.tsx              # Root layout
 │   ├── page.tsx                # Home page
 │   ├── globals.css             # Global styles
+│   ├── algebra/                # Search proxy endpoint
 │   └── api/
-│       ├── proxy/route.ts       # Proxy API endpoint
-│       └── search/route.ts      # Search endpoint
+│       ├── proxy/route.ts       # Website proxy
+│       ├── search/route.ts      # Search endpoint
+│       ├── ddg-search/route.ts  # DuckDuckGo proxy
+│       └── subdomains/route.ts  # Subdomain API
 ├── components/
 │   ├── App.tsx & App.module.css
 │   ├── SearchBar.tsx & SearchBar.module.css
 │   ├── TabBar.tsx & TabBar.module.css
 │   ├── UrlBar.tsx & UrlBar.module.css
 │   └── ProxyFrame.tsx & ProxyFrame.module.css
+├── middleware.ts                # Subdomain detection
 ├── package.json
 ├── tsconfig.json
 ├── next.config.js
@@ -117,29 +173,20 @@ nexushub/
 
 ## 🔧 Architecture
 
-### Frontend (Next.js + React)
-- **App Router** - Modern React 18+ setup
+### Frontend
+- **Next.js 14** - React framework with App Router
+- **React 18** - UI components with hooks
 - **TypeScript** - Full type safety
-- **CSS Modules** - Scoped styling with responsive design
-- **Mobile First** - Optimized for all screen sizes
+- **CSS Modules** - Scoped, responsive styling
+- **Responsive Design** - Mobile-first approach
 
 ### Backend (Serverless APIs)
-- **`/api/proxy`** - Fetch and proxy any URL securely
-- **`/api/search`** - Direct DuckDuckGo integration
-- **Timeout Safe** - Built for Vercel's serverless limits
-
-### Backend (server/index.js)
-- **Express Server** - Handles API routes and proxy requests
-- **Scramjet Streams** - Efficient data streaming for responses
-- **CORS Support** - Enables cross-origin requests
-- **Search Integration** - Multiple search engine support
-
-### Frontend (client/)
-- **React Components** - Modular UI structure
-- **Tab Management** - State-based tab system
-- **Keyboard Events** - Arrow key and shortcut support
-- **CSS-in-JS Styling** - Scoped component styles
-- **IFrame Proxy** - Embedded website viewing
+- **`/api/proxy`** - Fetch and proxy any URL
+- **`/api/search`** - Search functionality
+- **`/api/ddg-search`** - DuckDuckGo proxy with scramjet streaming
+- **`/api/subdomains`** - Subdomain management
+- **`/algebra`** - Private search endpoint
+- **Timeout Safe** - Optimized for Vercel's serverless
 
 ## 🎨 Color Scheme
 
@@ -148,29 +195,6 @@ nexushub/
 - **Secondary Purple**: #a78bfa
 - **Text**: #e0e0e0
 
-## 📝 API Endpoints
-
-- `POST /api/proxy` - Proxy a request to a URL
-- `GET /api/search` - Search with a specific engine
-
-## 🔐 Security Notes
-
-- Uses sandboxed iframes for webpage isolation
-- Includes User-Agent spoofing for better site compatibility
-- CORS-enabled for flexible cross-origin requests
-
-## 📦 Dependencies
-
-### Production
-- `next` - React framework for production
-- `react` - UI library
-- `react-dom` - React DOM rendering
-
-### Development
-- `typescript` - Type safety
-- `eslint` - Code linting
-- `@types/*` - TypeScript type definitions
-
 ## 🔐 Security Features
 
 - ✅ Sandboxed iframes for website isolation
@@ -178,85 +202,28 @@ nexushub/
 - ✅ User-Agent spoofing for compatibility
 - ✅ No data logging or storage
 - ✅ Private DuckDuckGo search integration
+- ✅ HTTPS-only on Vercel
 
-## � Subdomain System (Like Doge/Utopia)
+## 📦 Dependencies
 
-NexusHub supports **wildcard subdomains** so users can create their own proxy instances:
+### Production
+- `next` - React framework for production
+- `react` - UI library  
+- `react-dom` - React DOM rendering
+- `scramjet` - Stream processing for responses
 
-### How It Works
-
-1. **Wildcard DNS Setup** - Configure your domain with a wildcard record
-2. **Users Claim Subdomains** - Each user visits their subdomain and claims it
-3. **Unique Proxy Instances** - Each subdomain is a separate proxy instance
-
-### Example
-
-- **Main site**: `https://nexushublol.com`
-- **User subdomains**: `https://alice.nexushublol.com`, `https://bob.nexushublol.com`
-- Each user has their own unique proxy instance
-
-### Setup Instructions
-
-#### 1. Buy a Custom Domain (or Use Free Option)
-
-**Option A: Buy a Domain**
-- Register at any registrar (Namecheap, GoDaddy, etc.)
-- Point to Vercel using CNAME records
-- Costs $1-15/year
-
-**Option B: Free Domain (FreeDNS)**
-- Visit https://freedns.afraid.org
-- Create account and choose a free domain
-- No cost!
-
-#### 2. Configure Wildcard DNS
-
-Add a wildcard DNS record to your domain:
-
-| Type | Name | Target |
-|------|------|--------|
-| CNAME | `*` | `nexushublol.vercel.app` |
-
-This makes all subdomains (`alice.nexushublol.com`, `bob.nexushublol.com`, etc.) work automatically.
-
-#### 3. Subdomain Manager
-
-Users can claim subdomains through the built-in Subdomain Manager:
-
-1. Visit any subdomain: `https://alice.nexushublol.com`
-2. Click "🌐 Manage Subdomain"
-3. Enter username and claim the subdomain
-4. Share the URL with others!
-
-### API Endpoints
-
-**Check if subdomain is available:**
-```bash
-GET /api/subdomains
-Header: x-subdomain: alice
-```
-
-**Claim a subdomain:**
-```bash
-POST /api/subdomains
-Header: x-subdomain: alice
-Body: { "username": "alice_user" }
-```
-
-**Delete a subdomain:**
-```bash
-DELETE /api/subdomains
-Header: x-subdomain: alice
-Body: { "publicKey": "optional-secret-key" }
-```
+### Development
+- `typescript` - Type safety
+- `eslint` - Code linting
+- `@types/*` - TypeScript type definitions
 
 ## 🎯 Use Cases
 
 - 🏫 **School/Work Bypass** - Access blocked sites securely
 - 🔍 **Private Searching** - DuckDuckGo for anonymous searches
 - 📱 **Mobile Browsing** - Fully responsive on all devices
-- 🌍 **Multi-User Subdomains** - Create a platform like Doge/Utopia
-- 🚀 **Fast Deployment** - Vercel edge network for global speed
+- 🌍 **Multi-User Platform** - Like Doge/Utopia with wildcard subdomains
+- 🚀 **Fast Deployment** - Global CDN via Vercel edge network
 
 ## 📄 License
 
