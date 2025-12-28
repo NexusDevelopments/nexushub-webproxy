@@ -11,7 +11,6 @@ interface Tab {
   id: number;
   title: string;
   url: string | null;
-  isActive: boolean;
 }
 
 export default function App() {
@@ -25,7 +24,7 @@ export default function App() {
   const activeTab = tabs.find(t => t.id === activeTabId);
 
   const handleNewTab = () => {
-    const newTab: Tab = { id: nextTabId, title: 'New Tab', url: null, isActive: false };
+    const newTab: Tab = { id: nextTabId, title: 'New Tab', url: null };
     setTabs([...tabs, newTab]);
     setNextTabId(nextTabId + 1);
     setActiveTabId(newTab.id);
@@ -34,7 +33,7 @@ export default function App() {
   const handleCloseTab = (tabId: number) => {
     const newTabs = tabs.filter(t => t.id !== tabId);
     if (newTabs.length === 0) {
-      const newTab: Tab = { id: nextTabId, title: 'Home', url: null, isActive: true };
+      const newTab: Tab = { id: nextTabId, title: 'Home', url: null };
       setTabs([newTab]);
       setNextTabId(nextTabId + 1);
       setActiveTabId(newTab.id);

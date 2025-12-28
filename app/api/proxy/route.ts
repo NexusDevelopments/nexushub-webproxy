@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       },
-      timeout: 8000
+      signal: AbortSignal.timeout(8000)
     });
 
     const contentType = response.headers.get('content-type');
