@@ -46,9 +46,9 @@ export default function App() {
   };
 
   const handleSearch = (query: string) => {
-    // Use DuckDuckGo for secure, private searches
-    const url = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-    updateTabUrl(activeTabId, url);
+    // Open DuckDuckGo in new tab (avoids iframe blocking)
+    const duckduckgoUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+    window.open(duckduckgoUrl, '_blank', 'noopener,noreferrer');
   };
 
   const handleUrlSubmit = (url: string) => {
