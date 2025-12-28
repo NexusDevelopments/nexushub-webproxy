@@ -46,9 +46,9 @@ export default function App() {
   };
 
   const handleSearch = (query: string) => {
-    // Open DuckDuckGo in new tab (avoids iframe blocking)
-    const duckduckgoUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-    window.open(duckduckgoUrl, '_blank', 'noopener,noreferrer');
+    // Open algebra endpoint for private search proxy
+    const algebraUrl = `/algebra?q=${encodeURIComponent(query)}`;
+    updateTabUrl(activeTabId, algebraUrl);
   };
 
   const handleUrlSubmit = (url: string) => {
