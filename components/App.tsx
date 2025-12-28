@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 import TabBar from './TabBar';
 import ProxyFrame from './ProxyFrame';
 import UrlBar from './UrlBar';
+import SubdomainManager from './SubdomainManager';
 import styles from './App.module.css';
 
 interface Tab {
@@ -19,6 +20,7 @@ export default function App() {
   ]);
   const [activeTabId, setActiveTabId] = useState(1);
   const [nextTabId, setNextTabId] = useState(2);
+  const [showSubdomainManager, setShowSubdomainManager] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
 
   const activeTab = tabs.find(t => t.id === activeTabId);
@@ -123,7 +125,9 @@ export default function App() {
       />
 
       <div className={styles.contentContainer}>
-        {!activeTab?.url ? (
+        {showSubdomainManager ? (
+          <SubdomainManager />
+        ) : !activeTab?.url ? (
           <>
             <SearchBar onSearch={handleSearch} />
             <div className={styles.homeInfo}>
@@ -143,6 +147,12 @@ export default function App() {
                   <kbd>Ctrl + Shift + Tab</kbd> <span>Previous Tab</span>
                 </div>
               </div>
+              <button 
+                onClick={() => setShowSubdomainManager(true)}
+                className={styles.subdomainBtn}
+              >
+                🌐 Manage Subdomain
+              </button>
             </div>
           </>
         ) : (

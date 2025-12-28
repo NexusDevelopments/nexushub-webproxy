@@ -179,12 +179,83 @@ nexushub/
 - ✅ No data logging or storage
 - ✅ Private DuckDuckGo search integration
 
+## � Subdomain System (Like Doge/Utopia)
+
+NexusHub supports **wildcard subdomains** so users can create their own proxy instances:
+
+### How It Works
+
+1. **Wildcard DNS Setup** - Configure your domain with a wildcard record
+2. **Users Claim Subdomains** - Each user visits their subdomain and claims it
+3. **Unique Proxy Instances** - Each subdomain is a separate proxy instance
+
+### Example
+
+- **Main site**: `https://nexushublol.com`
+- **User subdomains**: `https://alice.nexushublol.com`, `https://bob.nexushublol.com`
+- Each user has their own unique proxy instance
+
+### Setup Instructions
+
+#### 1. Buy a Custom Domain (or Use Free Option)
+
+**Option A: Buy a Domain**
+- Register at any registrar (Namecheap, GoDaddy, etc.)
+- Point to Vercel using CNAME records
+- Costs $1-15/year
+
+**Option B: Free Domain (FreeDNS)**
+- Visit https://freedns.afraid.org
+- Create account and choose a free domain
+- No cost!
+
+#### 2. Configure Wildcard DNS
+
+Add a wildcard DNS record to your domain:
+
+| Type | Name | Target |
+|------|------|--------|
+| CNAME | `*` | `nexushublol.vercel.app` |
+
+This makes all subdomains (`alice.nexushublol.com`, `bob.nexushublol.com`, etc.) work automatically.
+
+#### 3. Subdomain Manager
+
+Users can claim subdomains through the built-in Subdomain Manager:
+
+1. Visit any subdomain: `https://alice.nexushublol.com`
+2. Click "🌐 Manage Subdomain"
+3. Enter username and claim the subdomain
+4. Share the URL with others!
+
+### API Endpoints
+
+**Check if subdomain is available:**
+```bash
+GET /api/subdomains
+Header: x-subdomain: alice
+```
+
+**Claim a subdomain:**
+```bash
+POST /api/subdomains
+Header: x-subdomain: alice
+Body: { "username": "alice_user" }
+```
+
+**Delete a subdomain:**
+```bash
+DELETE /api/subdomains
+Header: x-subdomain: alice
+Body: { "publicKey": "optional-secret-key" }
+```
+
 ## 🎯 Use Cases
 
 - 🏫 **School/Work Bypass** - Access blocked sites securely
 - 🔍 **Private Searching** - DuckDuckGo for anonymous searches
 - 📱 **Mobile Browsing** - Fully responsive on all devices
-- 🌍 **Custom Domains** - Easy FreeDNS setup for personal domains
+- 🌍 **Multi-User Subdomains** - Create a platform like Doge/Utopia
 - 🚀 **Fast Deployment** - Vercel edge network for global speed
 
 ## 📄 License
