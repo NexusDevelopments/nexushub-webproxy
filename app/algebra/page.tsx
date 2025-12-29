@@ -12,8 +12,7 @@ function AlgebraContent() {
   useEffect(() => {
     const query = searchParams.get('q');
     if (query) {
-      const target = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
-      const url = `/api/proxy?url=${encodeURIComponent(target)}`;
+      const url = `/api/ddg-search?q=${encodeURIComponent(query)}`;
       setSearchUrl(url);
     }
   }, [searchParams]);
@@ -21,8 +20,7 @@ function AlgebraContent() {
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      const target = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(searchQuery)}`;
-      const url = `/api/proxy?url=${encodeURIComponent(target)}`;
+      const url = `/api/ddg-search?q=${encodeURIComponent(searchQuery)}`;
       setSearchUrl(url);
       // Keep query text so the bar doesn't clear
     }
