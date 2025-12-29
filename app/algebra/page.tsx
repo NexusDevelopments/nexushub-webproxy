@@ -24,7 +24,7 @@ function AlgebraContent() {
       const target = `https://duckduckgo.com/?q=${encodeURIComponent(searchQuery)}`;
       const url = `/api/proxy?url=${encodeURIComponent(target)}`;
       setSearchUrl(url);
-      setSearchQuery('');
+      // Keep query text so the bar doesn't clear
     }
   };
 
@@ -53,7 +53,7 @@ function AlgebraContent() {
             src={searchUrl}
             className={styles.frame}
             title="DuckDuckGo Search"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"
           />
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
