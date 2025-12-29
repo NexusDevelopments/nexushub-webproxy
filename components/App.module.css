@@ -41,7 +41,7 @@
   box-shadow: 0 10px 40px rgba(124, 58, 237, 0.25);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 18px;
   backdrop-filter: blur(18px);
 }
@@ -56,7 +56,7 @@
   text-transform: uppercase;
 }
 
-.badge {
+.logoIcon {
   width: 48px;
   height: 48px;
   border-radius: 16px;
@@ -67,6 +67,7 @@
   color: #fdf6ff;
   font-weight: 900;
   letter-spacing: 0.5px;
+  font-size: 26px;
 }
 
 .logoText {
@@ -76,21 +77,7 @@
   background-clip: text;
 }
 
-.logoPills {
-  display: flex;
-  gap: 8px;
-}
-
-.pill {
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(124, 58, 237, 0.15);
-  border: 1px solid rgba(124, 58, 237, 0.4);
-  font-size: 12px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  color: #d9c9ff;
-}
+.logoPills { display: none; }
 
 .contentContainer {
   position: relative;
@@ -102,113 +89,54 @@
   padding: 24px;
 }
 
-.heroCard {
-  position: relative;
-  max-width: 960px;
+.centerStage {
+  max-width: 820px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 32px 24px;
   background: rgba(20, 6, 40, 0.65);
   border: 1px solid rgba(124, 58, 237, 0.35);
   border-radius: 28px;
   box-shadow: 0 20px 80px rgba(124, 58, 237, 0.3);
-  overflow: hidden;
   backdrop-filter: blur(18px);
+  text-align: center;
 }
 
-.heroGlow {
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  top: -60px;
-  right: -40px;
-  background: radial-gradient(closest-side, rgba(167, 139, 250, 0.35), transparent);
-  filter: blur(18px);
-  animation: pulse 6s ease-in-out infinite;
+.centerLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
-@keyframes pulse {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.8; }
-}
-
-.customEmoji {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  width: 72px;
-  height: 72px;
-  border-radius: 24px;
-  background: radial-gradient(circle at 30% 30%, #ffd29a, #ff7bd3);
-  box-shadow: 0 12px 36px rgba(255, 123, 211, 0.4);
+.centerIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
   display: grid;
   place-items: center;
-  overflow: hidden;
-}
-
-.emojiCore {
-  font-size: 30px;
+  background: linear-gradient(145deg, #ffd29a, #ff7bd3);
+  box-shadow: 0 12px 36px rgba(255, 123, 211, 0.4);
   color: #1b0a35;
-  z-index: 2;
+  font-size: 28px;
+  font-weight: 900;
 }
 
-.emojiRing {
-  position: absolute;
-  inset: 10px;
-  border-radius: 20px;
-  border: 2px dashed rgba(27, 10, 53, 0.3);
-  animation: spinSlow 14s linear infinite;
-}
-
-.heroText {
-  margin-bottom: 18px;
-}
-
-.title {
-  font-size: 64px;
+.centerTitle {
   margin: 0;
+  font-size: 58px;
   line-height: 1.05;
   background: linear-gradient(135deg, #f6e8ff, #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 10px 40px rgba(124, 58, 237, 0.35);
 }
 
-.subtitle {
-  margin: 10px 0 6px;
-  font-size: 20px;
+.rotating {
+  margin-top: 14px;
+  font-size: 18px;
   color: #f8ddff;
-  letter-spacing: 0.5px;
-}
-
-.caption {
-  margin: 0;
-  color: rgba(244, 237, 255, 0.82);
-  font-size: 15px;
-  max-width: 640px;
-}
-
-.heroChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.chip {
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(203, 168, 255, 0.4);
-  color: #f4edff;
-  font-size: 13px;
-  letter-spacing: 0.4px;
-}
-
-.homeInfo {
-  display: none;
+  letter-spacing: 0.6px;
 }
 
 /* Keep the browsing view intact */
@@ -216,32 +144,16 @@
   background: transparent;
 }
 
-/* Mobile Responsive */
 @media (max-width: 900px) {
-  .heroCard {
-    padding: 24px;
-  }
-
-  .title {
-    font-size: 48px;
-  }
-
-  .header {
-    padding: 16px;
-  }
-
-  .logoText {
-    font-size: 18px;
-  }
+  .header { padding: 16px; }
+  .contentContainer { padding: 16px; }
+  .centerTitle { font-size: 44px; }
+  .centerStage { padding: 24px 18px; }
 }
 
 @media (max-width: 640px) {
   .app { height: 100dvh; }
-  .contentContainer { padding: 16px; }
-  .heroCard { padding: 18px; }
-  .title { font-size: 38px; }
-  .subtitle { font-size: 16px; }
-  .caption { font-size: 14px; }
-  .logoPills { display: none; }
-  .badge { width: 40px; height: 40px; font-size: 14px; }
+  .centerTitle { font-size: 34px; }
+  .centerIcon { width: 48px; height: 48px; font-size: 24px; }
+  .rotating { font-size: 16px; }
 }

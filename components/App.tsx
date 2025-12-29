@@ -129,13 +129,8 @@ export default function App() {
       <div className={styles.nova2} />
       <header className={styles.header}>
         <div className={styles.logo}>
-          <span className={styles.badge}>NX</span>
+          <span className={styles.logoIcon}>⚡</span>
           <span className={styles.logoText}>NexusHub</span>
-        </div>
-        <div className={styles.logoPills}>
-          <span className={styles.pill}>warp</span>
-          <span className={styles.pill}>proxy</span>
-          <span className={styles.pill}>cloak</span>
         </div>
       </header>
 
@@ -150,24 +145,13 @@ export default function App() {
       <div className={styles.contentContainer}>
         {!activeTab?.url ? (
           <>
-            <div className={styles.heroCard}>
-              <div className={styles.heroGlow}>
-                <div className={styles.customEmoji}>
-                  <span className={styles.emojiCore}>★</span>
-                  <span className={styles.emojiRing} />
-                </div>
-              </div>
-              <div className={styles.heroText}>
-                <h1 className={styles.title}>NexusHub</h1>
-                <p className={styles.subtitle}>{phrases[phraseIndex]}</p>
-                <p className={styles.caption}>Ultra-glassy proxy portal with a purple nova backdrop. Type anything and drop into /algebra.</p>
+            <div className={styles.centerStage}>
+              <div className={styles.centerLogo}>
+                <span className={styles.centerIcon}>⚡</span>
+                <h1 className={styles.centerTitle}>NexusHub</h1>
               </div>
               <SearchBar onSearch={handleSearch} />
-              <div className={styles.heroChips}>
-                <span className={styles.chip}>bubbly UI</span>
-                <span className={styles.chip}>transparent glass</span>
-                <span className={styles.chip}>animated nova</span>
-              </div>
+              <p className={styles.rotating}>{phrases[phraseIndex]}</p>
             </div>
           </>
         ) : (

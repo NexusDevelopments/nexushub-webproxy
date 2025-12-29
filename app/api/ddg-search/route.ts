@@ -17,6 +17,7 @@ async function fetchSearchHtml(url: string, referer: string) {
       'Upgrade-Insecure-Requests': '1'
     },
     redirect: 'follow',
+    cache: 'no-store',
     signal: AbortSignal.timeout(12000)
   });
   const html = await res.text();
@@ -58,6 +59,16 @@ async function searchRewritten(query: string) {
       name: 'searx-bus-hit',
       url: `https://search.bus-hit.me/search?q=${encodeURIComponent(query)}`,
       referer: 'https://search.bus-hit.me/'
+    },
+    {
+      name: 'searx-tk',
+      url: `https://searx.tiekoetter.com/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://searx.tiekoetter.com/'
+    },
+    {
+      name: 'searx-space',
+      url: `https://search.im-in.space/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://search.im-in.space/'
     }
   ];
 
