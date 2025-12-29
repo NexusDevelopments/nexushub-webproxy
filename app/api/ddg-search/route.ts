@@ -36,6 +36,11 @@ async function searchRewritten(query: string) {
       referer: 'https://html.duckduckgo.com/'
     },
     {
+      name: 'brave-search',
+      url: `https://search.brave.com/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://search.brave.com/'
+    },
+    {
       name: 'searx-be',
       url: `https://searx.be/search?q=${encodeURIComponent(query)}`,
       referer: 'https://searx.be/'
@@ -69,6 +74,26 @@ async function searchRewritten(query: string) {
       name: 'searx-space',
       url: `https://search.im-in.space/search?q=${encodeURIComponent(query)}`,
       referer: 'https://search.im-in.space/'
+    },
+    {
+      name: 'ecosia',
+      url: `https://www.ecosia.org/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://www.ecosia.org/'
+    },
+    {
+      name: 'qwant',
+      url: `https://www.qwant.com/?q=${encodeURIComponent(query)}`,
+      referer: 'https://www.qwant.com/'
+    },
+    {
+      name: 'searx-uk',
+      url: `https://searx.work/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://searx.work/'
+    },
+    {
+      name: 'yahooapi',
+      url: `https://search.yahoo.com/search?p=${encodeURIComponent(query)}`,
+      referer: 'https://search.yahoo.com/'
     }
   ];
 
