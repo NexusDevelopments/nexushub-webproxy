@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { rewriteHtml } from '../_lib/rewrite';
 
+type Engine = {
+  name: string;
+  url: string;
+  referer: string;
+};
+
 async function fetchSearchHtml(url: string, referer: string) {
   const res = await fetch(url, {
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       'Accept-Language': 'en-US,en;q=0.9',
-      'Referer': referer
+      'Referer': referer,
+      'Upgrade-Insecure-Requests': '1'
     },
+    redirect: 'follow',
     signal: AbortSignal.timeout(12000)
   });
   const html = await res.text();
@@ -20,34 +28,56 @@ function isDdgError(html: string) {
 }
 
 async function searchRewritten(query: string) {
-  const ddgUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
-  const { res, html } = await fetchSearchHtml(ddgUrl, 'https://html.duckduckgo.com/');
-  if (res.ok && !isDdgError(html)) {
-    const rewritten = rewriteHtml(html, new URL(ddgUrl));
-    return new NextResponse(rewritten, {
-      status: res.status,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'no-store'
+  const engines: Engine[] = [
+    {
+      name: 'ddg-html',
+      url: `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`,
+      referer: 'https://html.duckduckgo.com/'
+    },
+    {
+      name: 'searx-be',
+      url: `https://searx.be/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://searx.be/'
+    },
+    {
+      name: 'searx-garuda',
+      url: `https://search.garudalinux.org/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://search.garudalinux.org/'
+    },
+    {
+      name: 'searx-raw',
+      url: `https://search.snopyta.org/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://search.snopyta.org/'
+    }
+  ];
+
+  let lastError: string | undefined;
+
+  for (const engine of engines) {
+    try {
+      const { res, html } = await fetchSearchHtml(engine.url, engine.referer);
+      const badDdg = engine.name === 'ddg-html' && isDdgError(html);
+      if (res.status >= 500 || badDdg) {
+        lastError = `${engine.name} returned status ${res.status}`;
+        continue;
       }
-    });
+
+      const rewritten = rewriteHtml(html, new URL(engine.url));
+      return new NextResponse(rewritten, {
+        status: res.status,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-store',
+          'X-Search-Engine': engine.name
+        }
+      });
+    } catch (err) {
+      lastError = err instanceof Error ? err.message : 'unknown error';
+      continue;
+    }
   }
 
-  // Fallback: SearxNG public instance
-  const searx = `https://searx.be/search?q=${encodeURIComponent(query)}`;
-  try {
-    const { res: sRes, html: sHtml } = await fetchSearchHtml(searx, 'https://searx.be/');
-    const rewritten = rewriteHtml(sHtml, new URL(searx));
-    return new NextResponse(rewritten, {
-      status: sRes.status,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'no-store'
-      }
-    });
-  } catch (_e) {
-    return NextResponse.json({ error: 'All search providers failed' }, { status: 502 });
-  }
+  return NextResponse.json({ error: 'All search providers failed', details: lastError }, { status: 502 });
 }
 
 export async function POST(request: NextRequest) {
