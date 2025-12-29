@@ -12,7 +12,7 @@ function AlgebraContent() {
   useEffect(() => {
     const query = searchParams.get('q');
     if (query) {
-      const target = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+      const target = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
       const url = `/api/proxy?url=${encodeURIComponent(target)}`;
       setSearchUrl(url);
     }
@@ -21,7 +21,7 @@ function AlgebraContent() {
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      const target = `https://duckduckgo.com/?q=${encodeURIComponent(searchQuery)}`;
+      const target = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(searchQuery)}`;
       const url = `/api/proxy?url=${encodeURIComponent(target)}`;
       setSearchUrl(url);
       // Keep query text so the bar doesn't clear
