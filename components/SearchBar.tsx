@@ -13,9 +13,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (query.trim()) {
-      // Use DuckDuckGo for secure, private searches
       onSearch(query);
-      setQuery('');
     }
   };
 
@@ -24,7 +22,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
       <div className={styles.inputWrapper}>
         <input
           type="text"
-          placeholder="Search securely with DuckDuckGo..."
+          placeholder="Type anything… we’ll warp you to /algebra"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className={styles.input}

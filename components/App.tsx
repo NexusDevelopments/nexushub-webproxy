@@ -20,6 +20,15 @@ export default function App() {
   const [activeTabId, setActiveTabId] = useState(1);
   const [nextTabId, setNextTabId] = useState(2);
   const appRef = useRef<HTMLDivElement>(null);
+  const phrases = [
+    'hello im nexus dev',
+    'go get a ob',
+    "don't goon on this ir else...",
+    'proxy the planet',
+    'blink twice if u see this',
+    'hydrate or evaporate'
+  ];
+  const [phraseIndex, setPhraseIndex] = useState(0);
 
   const activeTab = tabs.find(t => t.id === activeTabId);
 
@@ -46,9 +55,10 @@ export default function App() {
   };
 
   const handleSearch = (query: string) => {
-    // Open algebra endpoint for private search proxy
+    if (!query.trim()) return;
     const algebraUrl = `/algebra?q=${encodeURIComponent(query)}`;
-    updateTabUrl(activeTabId, algebraUrl);
+    // Hard navigate so user lands on the dedicated algebra page
+    window.location.href = algebraUrl;
   };
 
   const handleUrlSubmit = (url: string) => {
@@ -106,12 +116,26 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown as EventListener);
   }, [tabs, activeTabId]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % phrases.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [phrases.length]);
+
   return (
     <div className={styles.app} ref={appRef}>
+      <div className={styles.nova} />
+      <div className={styles.nova2} />
       <header className={styles.header}>
         <div className={styles.logo}>
-          <span className={styles.logoIcon}>⚡</span>
+          <span className={styles.badge}>NX</span>
           <span className={styles.logoText}>NexusHub</span>
+        </div>
+        <div className={styles.logoPills}>
+          <span className={styles.pill}>warp</span>
+          <span className={styles.pill}>proxy</span>
+          <span className={styles.pill}>cloak</span>
         </div>
       </header>
 
@@ -126,23 +150,23 @@ export default function App() {
       <div className={styles.contentContainer}>
         {!activeTab?.url ? (
           <>
-            <SearchBar onSearch={handleSearch} />
-            <div className={styles.homeInfo}>
-              <h2>Welcome to NexusHub</h2>
-              <p>🌐 Advanced Web Proxy with Secure Browsing</p>
-              <div className={styles.shortcuts}>
-                <div className={styles.shortcut}>
-                  <kbd>Ctrl + T</kbd> <span>New Tab</span>
+            <div className={styles.heroCard}>
+              <div className={styles.heroGlow}>
+                <div className={styles.customEmoji}>
+                  <span className={styles.emojiCore}>★</span>
+                  <span className={styles.emojiRing} />
                 </div>
-                <div className={styles.shortcut}>
-                  <kbd>Ctrl + W</kbd> <span>Close Tab</span>
-                </div>
-                <div className={styles.shortcut}>
-                  <kbd>Ctrl + Tab</kbd> <span>Next Tab</span>
-                </div>
-                <div className={styles.shortcut}>
-                  <kbd>Ctrl + Shift + Tab</kbd> <span>Previous Tab</span>
-                </div>
+              </div>
+              <div className={styles.heroText}>
+                <h1 className={styles.title}>NexusHub</h1>
+                <p className={styles.subtitle}>{phrases[phraseIndex]}</p>
+                <p className={styles.caption}>Ultra-glassy proxy portal with a purple nova backdrop. Type anything and drop into /algebra.</p>
+              </div>
+              <SearchBar onSearch={handleSearch} />
+              <div className={styles.heroChips}>
+                <span className={styles.chip}>bubbly UI</span>
+                <span className={styles.chip}>transparent glass</span>
+                <span className={styles.chip}>animated nova</span>
               </div>
             </div>
           </>

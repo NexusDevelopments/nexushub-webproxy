@@ -48,6 +48,16 @@ async function searchRewritten(query: string) {
       name: 'searx-raw',
       url: `https://search.snopyta.org/search?q=${encodeURIComponent(query)}`,
       referer: 'https://search.snopyta.org/'
+    },
+    {
+      name: 'searx-raphielscape',
+      url: `https://searx.raphielscape.com/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://searx.raphielscape.com/'
+    },
+    {
+      name: 'searx-bus-hit',
+      url: `https://search.bus-hit.me/search?q=${encodeURIComponent(query)}`,
+      referer: 'https://search.bus-hit.me/'
     }
   ];
 
@@ -57,7 +67,7 @@ async function searchRewritten(query: string) {
     try {
       const { res, html } = await fetchSearchHtml(engine.url, engine.referer);
       const badDdg = engine.name === 'ddg-html' && isDdgError(html);
-      if (res.status >= 500 || badDdg) {
+      if (res.status >= 400 || badDdg) {
         lastError = `${engine.name} returned status ${res.status}`;
         continue;
       }
