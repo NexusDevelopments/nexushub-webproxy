@@ -12,7 +12,8 @@ function AlgebraContent() {
   useEffect(() => {
     const query = searchParams.get('q');
     if (query) {
-      const url = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+      const target = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+      const url = `/api/proxy?url=${encodeURIComponent(target)}`;
       setSearchUrl(url);
     }
   }, [searchParams]);
@@ -20,7 +21,8 @@ function AlgebraContent() {
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      const url = `https://duckduckgo.com/?q=${encodeURIComponent(searchQuery)}`;
+      const target = `https://duckduckgo.com/?q=${encodeURIComponent(searchQuery)}`;
+      const url = `/api/proxy?url=${encodeURIComponent(target)}`;
       setSearchUrl(url);
       setSearchQuery('');
     }

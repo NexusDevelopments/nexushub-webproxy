@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { DataStream } from 'scramjet';
+import { rewriteHtml } from '../_lib/rewrite';
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,27 +18,16 @@ export async function POST(request: NextRequest) {
       },
       signal: AbortSignal.timeout(8000)
     });
-
     const contentType = response.headers.get('content-type');
     const html = await response.text();
 
-    // Use scramjet DataStream to process the response
-    const processed = await DataStream.fromArray([html])
-      .map((content: string) => {
-        // Inject meta tag to allow iframe embedding
-        return content.replace(
-          '<head>',
-          '<head><meta name="referrer" content="no-referrer">'
-        );
-      })
-      .toArray()
-      .then((arr: string[]) => arr.join(''));
+    // Ultraviolet-style rewrite for embedding and proxying links/resources
+    const rewritten = rewriteHtml(html, new URL(searchUrl));
 
-    return new NextResponse(processed, {
+    return new NextResponse(rewritten, {
       status: response.status,
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
-        'X-Frame-Options': 'ALLOWALL',
         'Cache-Control': 'no-store'
       }
     });

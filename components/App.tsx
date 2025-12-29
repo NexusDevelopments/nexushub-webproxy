@@ -52,7 +52,8 @@ export default function App() {
   };
 
   const handleUrlSubmit = (url: string) => {
-    updateTabUrl(activeTabId, url);
+    const proxied = `/api/proxy?url=${encodeURIComponent(url)}\u0026ts=${Date.now()}`;
+    updateTabUrl(activeTabId, proxied);
   };
 
   const updateTabUrl = (tabId: number, url: string) => {

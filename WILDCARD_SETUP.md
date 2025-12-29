@@ -50,26 +50,45 @@ If using FreeDNS:
 
 1. Log into your domain registrar
 2. Find "DNS Records" or "DNS Settings"
-3. Add a new CNAME record:
-   - **Name:** `*` (wildcard)
-   - **Type:** CNAME
-   - **Value:** `nexushublol.vercel.app` (your Vercel domain)
-   - **TTL:** 3600 (or default)
+3. Add Vercel DNS records (recommended):
+    - **A (apex/root)**
+       - Name: `@`
+       - Value: `76.76.21.21` (Vercel Edge Network)
+    - **CNAME (wildcard)**
+       - Name: `*`
+       - Value: `cname.vercel-dns.com`
+    - **CNAME (www)**
+       - Name: `www`
+       - Value: `cname.vercel-dns.com`
 
-4. Also add for the root domain:
-   - **Name:** `@` (root)
-   - **Type:** CNAME (or ALIAS if available)
-   - **Value:** `nexushublol.vercel.app`
+    Note: Some registrars show suggested IPs like `216.198.79.1`. That is not Vercel. Use `76.76.21.21` for the apex and `cname.vercel-dns.com` for CNAMEs.
+
+#### Using A Records (when you insist on IP)
+
+- **Best practice:** Use `A` only for the apex (`@`) → `76.76.21.21`. Use `CNAME` for `*` (wildcard) and `www`.
+- **If you insist on A for subdomains:** Add explicit `A` records for each subdomain you want (e.g., `alice`, `bob`) pointing to `76.76.21.21`. Most registrars do not support `A` wildcard (`*`) reliably.
+- **Caveat:** This is harder to maintain and not recommended by Vercel. `CNAME` to `cname.vercel-dns.com` is the supported way for subdomains.
+- **Vercel requirement:** Regardless of `A` or `CNAME`, you must add the domain (or specific subdomain) to your Vercel project under Settings → Domains so Vercel serves your app and provisions SSL.
+
+#### FreeDNS (donated domains) and A Records
+
+- Donated domains usually only let you create specific subdomains, and commonly allow **CNAME** records (not apex `A`).
+- To point a FreeDNS subdomain at NexusHub, set `Type: CNAME`, `Destination: cname.vercel-dns.com` (or your-project.vercel.app), then add that exact subdomain in Vercel → Domains.
+- Using an `A` record to `76.76.21.21` on FreeDNS generally requires owning the zone and is rarely available for donated domains.
 
 **Example (Namecheap):**
 ```
-Name: *
-Type: CNAME
-Target: nexushublol.vercel.app
+Host: @
+Type: A
+Value: 76.76.21.21
 
-Name: @
-Type: ALIAS
-Target: nexushublol.vercel.app
+Host: *
+Type: CNAME
+Value: cname.vercel-dns.com
+
+Host: www
+Type: CNAME
+Value: cname.vercel-dns.com
 ```
 
 #### If Using FreeDNS:
@@ -109,29 +128,24 @@ nslookup bob.nexushublol.com
 
 2. You should see NexusHub loading!
 
-3. Click "🌐 Manage Subdomain" button
-
-4. Enter a username (e.g., "alice") and claim the subdomain
-
-5. The subdomain is now registered to that user!
+3. No claiming step: visiting any subdomain immediately serves NexusHub.
+   - Share `https://alice.nexushublol.com` (or any name) and it just works.
 
 ## How Users Use It
 
-1. **Share the Link:** User shares `https://alice.nexushublol.com` with friends
-2. **Friends Visit:** They go to that URL
-3. **Claim or Access:** If not claimed, they can claim it. If claimed, they use the existing proxy
-4. **Their Own Proxy:** Or they can visit a different subdomain like `https://bob.nexushublol.com` to get their own
+1. **Pick any name:** `https://alice.nexushublol.com`, `https://bob.nexushublol.com`, etc.
+2. **Visit directly:** The subdomain loads NexusHub instantly.
+3. **Share freely:** Anyone can use any subdomain; no signup or claiming.
 
 ## Advanced: Custom Setup
 
-### Add More Features
+### Add More Features (Optional)
 
-You can modify `/app/api/subdomains/route.ts` to:
-- Add user authentication
+If you later want per-subdomain personalization, you can enhance `/app/api/subdomains/route.ts` to:
 - Store settings per subdomain
-- Add password protection
+- Add passwords or tokens
 - Track usage statistics
-- Add subdomain aliases
+- Add aliases
 
 ### Database (Optional)
 

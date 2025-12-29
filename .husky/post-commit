@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Auto-push the current branch to the default remote after each commit
+branch=$(git branch --show-current)
+remote=$(git remote | head -n1)
+
+if [ -n "$branch" ] && [ -n "$remote" ]; then
+  echo "[husky] Auto pushing $branch to $remote"
+  git push "$remote" "$branch"
+fi
